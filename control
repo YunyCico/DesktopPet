@@ -1,0 +1,9 @@
+Package: com.mengyun.desktoppet
+Name: DesktopPet
+Version: 0.1.0
+Architecture: iphoneos-arm64
+Description: A tiny draggable desktop pet for SpringBoard
+Maintainer: mengyun
+Author: mengyun
+Section: Tweaks
+Depends: mobilesubstrate

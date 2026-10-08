@@ -1,0 +1,47 @@
+name: Build DesktopPet
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build ${{ matrix.scheme }} package
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scheme: [rootless, roothide]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang perl git curl ldid dpkg-dev fakeroot
+
+      - name: Install Theos
+        run: |
+          if [ "${{ matrix.scheme }}" = "roothide" ]; then
+            git clone --recursive --depth=1 https://github.com/roothide/theos.git "$HOME/theos"
+          else
+            git clone --recursive --depth=1 https://github.com/theos/theos.git "$HOME/theos"
+          fi
+          echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
+          echo "PATH=$HOME/theos/bin:$PATH" >> "$GITHUB_ENV"
+
+      - name: Build package
+        env:
+          THEOS_PACKAGE_SCHEME: ${{ matrix.scheme }}
+        run: |
+          make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME="$THEOS_PACKAGE_SCHEME"
+
+      - name: Upload Debian package
+        uses: actions/upload-artifact@v4
+        with:
+          name: DesktopPet-${{ matrix.scheme }}
+          path: packages/*.deb
+          if-no-files-found: error
