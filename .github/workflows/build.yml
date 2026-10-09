@@ -36,6 +36,14 @@ jobs:
           echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
           echo "PATH=$HOME/theos/bin:$PATH" >> "$GITHUB_ENV"
 
+      - name: Install iOS toolchain
+        run: |
+          curl -L --fail --retry 3 -o /tmp/linux-ios-toolchain.tar.lzma https://github.com/sbingner/llvm-project/releases/latest/download/linux-ios-arm64e-clang-toolchain.tar.lzma
+          mkdir -p /tmp/ios-toolchain "$THEOS/toolchain/linux/iphone"
+          tar --lzma -xf /tmp/linux-ios-toolchain.tar.lzma -C /tmp/ios-toolchain
+          cp -a /tmp/ios-toolchain/ios-arm64e-clang-toolchain/. "$THEOS/toolchain/linux/iphone/"
+          test -x "$THEOS/toolchain/linux/iphone/bin/clang"
+
       - name: Install iOS SDK
         run: |
           curl -L --fail --retry 3 -o /tmp/iPhoneOS16.5.sdk.tar.xz https://github.com/theos/sdks/releases/download/master-146e41f/iPhoneOS16.5.sdk.tar.xz
