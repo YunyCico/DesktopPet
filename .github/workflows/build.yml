@@ -21,7 +21,10 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential clang perl git curl ldid dpkg-dev fakeroot
+          sudo apt-get install -y build-essential clang perl git curl dpkg-dev fakeroot
+          curl -L --fail --retry 3 -o /tmp/ldid https://github.com/ProcursusTeam/ldid/releases/download/v2.1.5-procursus7/ldid_linux_x86_64
+          sudo install -m 0755 /tmp/ldid /usr/local/bin/ldid
+          ldid --version || true
 
       - name: Install Theos
         run: |
