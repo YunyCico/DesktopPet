@@ -22,7 +22,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential clang perl git curl dpkg-dev fakeroot
-          curl -L --fail --retry 3 -o /tmp/libtinfo5.deb http://archive.ubuntu.com/ubuntu/pool/main/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
+          curl -L --fail --retry 3 -o /tmp/libtinfo5.deb https://security.ubuntu.com/ubuntu/pool/updates/main/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
           sudo dpkg -i /tmp/libtinfo5.deb
           curl -L --fail --retry 3 -o /tmp/ldid https://github.com/ProcursusTeam/ldid/releases/download/v2.1.5-procursus7/ldid_linux_x86_64
           sudo install -m 0755 /tmp/ldid /usr/local/bin/ldid
