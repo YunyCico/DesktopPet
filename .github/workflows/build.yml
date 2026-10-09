@@ -36,6 +36,13 @@ jobs:
           echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
           echo "PATH=$HOME/theos/bin:$PATH" >> "$GITHUB_ENV"
 
+      - name: Install iOS SDK
+        run: |
+          curl -L --fail --retry 3 -o /tmp/iPhoneOS16.5.sdk.tar.xz https://github.com/theos/sdks/releases/download/master-146e41f/iPhoneOS16.5.sdk.tar.xz
+          mkdir -p "$THEOS/sdks"
+          tar -xJf /tmp/iPhoneOS16.5.sdk.tar.xz -C "$THEOS/sdks"
+          test -d "$THEOS/sdks/iPhoneOS16.5.sdk"
+
       - name: Build package
         env:
           THEOS_PACKAGE_SCHEME: ${{ matrix.scheme }}
